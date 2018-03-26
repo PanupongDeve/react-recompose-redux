@@ -1,7 +1,10 @@
 import React from 'react';
+import { connect } from 'react-redux'
+import { bindActionCreators } from "redux";
 import { withState, withHandlers ,compose } from  'recompose';
 import Title from './Title';
 import Presentation from './Presentation';
+import {sayHi, sayHi2} from './actions';
 
 const hocHello = (Composecomponent) => {
     return (props) => {
@@ -25,16 +28,29 @@ const handleEvent = withHandlers({
         const {numberState, setNumberState } =  props;
         setNumberState(numberState -1);
     },
-    sayHello: props => event => {
-        return 'Good Morning';
+    handleShowReduxMessage: props => event => {
+        props.sayHi();
     }
 });
 
+const mapStateToProps = ({ hello }) => {
+    return {
+        hello
+    };
+}
+
+const mapDispatchToProps = dispatch => {
+    return bindActionCreators({ sayHi }, dispatch);
+}
+
 
 const composeHOC = compose(
+    connect(mapStateToProps, mapDispatchToProps),
     numberState,
     handleEvent,
     hocHello,
 );
 
-export default composeHOC(Presentation);
+const App = composeHOC(Presentation);
+
+export default App;
