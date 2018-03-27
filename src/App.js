@@ -18,6 +18,7 @@ const hocHello = Composecomponent => {
 };
 
 const numberState = withState("numberState", "setNumberState", 0);
+const DisPlayState = withState("display", "setState", { text: "foo" });
 const numberDidMout = lifecycle({
   componentDidMount() {
     this.props.sayHiLifecycle();
@@ -31,8 +32,10 @@ const handleEvent = withHandlers({
     setNumberState(numberState + 1);
   },
   handleSubEvent: props => event => {
-    const { numberState, setNumberState } = props;
+    const { numberState, setNumberState, setState } = props;
     setNumberState(numberState - 1);
+    const newDisplay = "Bar";
+    setState({ text: "bar" });
   },
   handleShowReduxMessage: props => event => {
     props.sayHi();
@@ -54,6 +57,7 @@ const mapDispatchToProps = dispatch => {
 const composeHOC = compose(
   connect(mapStateToProps, mapDispatchToProps),
   numberDidMout,
+  DisPlayState,
   numberState,
   handleEvent,
   hocHello

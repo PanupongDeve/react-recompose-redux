@@ -3,6 +3,7 @@ import logo from "./logo.svg";
 import "./App.css";
 
 const Presentation = props => {
+  console.log(props.display.text);
   return (
     <div className="App">
       <button onClick={props.handleSubEvent}>Sub</button>
